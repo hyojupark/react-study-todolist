@@ -16,11 +16,11 @@ class Todo extends React.Component {
                     <InputBase 
                         inputProps={{ "aria-label": "naked" }}
                         type="text"
-                        id={item.id}
+                        id={String(item.id)}
                         name={item.name}
                         value={item.title}
-                        multiple={true}
-                        fullWidth={true}
+                        multiple
+                        fullWidth
                     />
                 </ListItemText>
             </ListItem>
