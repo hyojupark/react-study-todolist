@@ -3,6 +3,7 @@ import Todo from './Todo';
 import AddTodo from './AddTodo';
 import { Paper, List, Container } from '@material-ui/core';
 import './App.css';
+import { call } from './service/AppService';
 
 class App extends React.Component {
     constructor(props) {
@@ -15,23 +16,33 @@ class App extends React.Component {
         };
     }
 
-    add = (item) => {
-        const thisItems = this.state.items;
-        item.id = "ID-" + thisItems.length;
-        item.done = false;
-        thisItems.push(item);
-        this.setState({ items: thisItems });
-        console.log("item : ", this.state.items);
+    componentDidMount() {
+        call("/todo", "GET", null).then((response) => 
+            this.setState({ item: response.data })
+        );
     }
 
+    add = (item) => {
+        // const thisItems = this.state.items;
+        // item.id = "ID-" + thisItems.length;
+        // item.done = false;
+        // thisItems.push(item);
+        // this.setState({ items: thisItems });
+
+        call("/todo", "POST", item).thegn((response) => 
+            this.setState({ item: response.data })
+        );
+    };
+
     delete = (item) => {
-        const thisItems = this.state.items;
-        console.log("Before Update Items : ", this.state.items);
-        const newItems = thisItems.filter(e => e.id !== item.id);
-        this.setState({ items: newItems }, () => {
-            console.log("Update Items : ", this.state.items);
-        });
-    }
+        // const thisItems = this.state.items;
+        // const newItems = thisItems.filter(e => e.id !== item.id);
+        // this.setState({ items: newItems });
+
+        call("/todo", "DELETE", item).then((response) => 
+            this.setState({ items: response.data })
+        );
+    };
 
 	render() {
         // var todoItems = this.state.items.map((item, idx) => (
