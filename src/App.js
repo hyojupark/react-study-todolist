@@ -10,15 +10,15 @@ class App extends React.Component {
         super(props);
         this.state = { 
             items: [
-                {id: 0, title: "Hello World 0", done: true },
-                {id: 1, title: "Hello World 1", done: false },
+                // {id: 0, title: "Hello World 0", done: true },
+                // {id: 1, title: "Hello World 1", done: false },
             ],
         };
     }
 
     componentDidMount() {
         call("/todo", "GET", null).then((response) => 
-            this.setState({ item: response.data })
+            this.setState({ items: response.data })
         );
     }
 
@@ -28,11 +28,16 @@ class App extends React.Component {
         // item.done = false;
         // thisItems.push(item);
         // this.setState({ items: thisItems });
-
-        call("/todo", "POST", item).thegn((response) => 
-            this.setState({ item: response.data })
+        call("/todo", "POST", item).then((response) => 
+            this.setState({ items: response.data })
         );
     };
+
+    update = (item) => {
+        call("/todo", "PUT", item).then((response) => 
+            this.setState({ items: response.data })
+        );
+    }
 
     delete = (item) => {
         // const thisItems = this.state.items;
@@ -52,7 +57,12 @@ class App extends React.Component {
             <Paper style={{ margin: 16}}>
                 <List>
                     {this.state.items.map((item, idx) => (
-                        <Todo item={item} key={item.id} delete={this.delete} />
+                        <Todo 
+                            item={item} 
+                            key={item.id} 
+                            delete={this.delete}
+                            update={this.update} 
+                        />
                     ))}
                 </List>
             </Paper>
